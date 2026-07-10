@@ -1,0 +1,166 @@
+[root@ipb21b049c vllm_api]# cat yd_5.0.py 
+from ais_bench.benchmark.models import VLLMCustomAPIChat
+from ais_bench.benchmark.utils.postprocess.model_postprocessors import extract_non_reasoning_content
+
+models = [
+    dict(
+        attr="service",
+        type=VLLMCustomAPIChat,
+        abbr="vllm-api-stream-chat",
+        path="/mnt/weight/Kimi-K2.5-w4a8",
+        model="kimi25",
+        stream=False,
+        request_rate=5.0,
+        use_timestamp=False,
+        retry=2,
+        api_key="",
+        host_ip="192.168.13.153",
+        host_port=8900,
+        url="",
+        max_out_len=1024,
+        batch_size=256,
+        trust_remote_code=True,
+        generation_kwargs=dict(
+            temperature=0.01,
+            ignore_eos=False,
+        ),
+        pred_postprocessor=dict(type=extract_non_reasoning_content),
+    )
+]
+
+
+
+[2026-07-09 18:04:12,800] [ais_bench] [INFO] Loading yd_5.0: /home/z00955625/benchmark/ais_bench/benchmark/configs/./models/vllm_api/yd_5.0.py
+[2026-07-09 18:04:12,804] [ais_bench] [INFO] Loading gsm8k_gen_0_shot_cot_str_perf: /home/z00955625/benchmark/ais_bench/benchmark/configs/./datasets/gsm8k/gsm8k_gen_0_shot_cot_str_perf.py
+[2026-07-09 18:04:12,806] [ais_bench] [INFO] Loading example: /home/z00955625/benchmark/ais_bench/benchmark/configs/./summarizers/example.py
+[2026-07-09 18:04:12,836] [ais_bench] [INFO] Current exp folder: outputs/default/20260709_180358
+[2026-07-09 18:04:12,836] [ais_bench] [INFO] Keeping the first 2048 prompts for dataset [gsm8k]
+[2026-07-09 18:04:12,844] [ais_bench] [INFO] Starting inference tasks...
+[2026-07-09 18:04:12,844] [ais_bench] [INFO] Partitioned into 1 tasks.
+[2026-07-09 18:04:12,844] [ais_bench] [INFO] Merging datasets with the same model and inferencer...
+[2026-07-09 18:04:12,869] [ais_bench] [INFO] Launch TasksMonitor, PID: 5590, Refresh interval: 0.5, Run in background: True
+[2026-07-09 18:04:28,296] [ais_bench] [INFO] Debug mode, print progress directly
+[2026-07-09 18:04:28,297] [ais_bench] [INFO] Task [vllm-api-stream-chat/gsm8k]
+[2026-07-09 18:04:30,096] [ais_bench] [INFO] Zero Retriever initialized, returning empty shot case for all queries
+[2026-07-09 18:04:30,304] [ais_bench] [INFO] Apply ice template finished
+[2026-07-09 18:04:30,312] [ais_bench] [INFO] Start warmup, run with concurrency: 256
+Warmup: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1/1 [00:25<00:00, 25.28s/case]
+[2026-07-09 18:04:55,590] [ais_bench] [INFO] Warmup finished Total Count: 1 Success Count: 1 Failed Count: 0 
+[2026-07-09 18:04:55,627] [ais_bench] [INFO] Dataset needed memory size: 31.89123058 MB
+[2026-07-09 18:04:55,627] [ais_bench] [INFO] Memory usage check passed: 19.10% < 80% (Available: 1617.84 GB)
+[2026-07-09 18:04:55,644] [ais_bench] [INFO] Traffic request rate: 5.0 RPS with burstiness 1.0.
+[2026-07-09 18:04:55,652] [ais_bench] [INFO] Begin to draw RPS distribution plot...
+[2026-07-09 18:04:55,846] [ais_bench] [INFO] Successfully saved RPS distribution HTML chart to outputs/default/20260709_180358/performances/vllm-api-stream-chat/gsm8k_rps_distribution_plot.html
+[2026-07-09 18:04:55,851] [ais_bench] [INFO] Successfully saved RPS distribution JSON data to outputs/default/20260709_180358/performances/vllm-api-stream-chat/gsm8k_rps_distribution_plot.json
+[2026-07-09 18:04:55,853] [ais_bench] [INFO] 
+Request Per Second (RPS) Distribution Summary
+Metric                   Value
+-----------------------  ------------------------------------------------------------------------------------------------
+Total Requests           2048
+Request Classification   Normal: 815 | Timing Anomaly: 13 | Burstiness Anomaly: 1220 | Infinite RPS Anomaly: 0
+Target Rate              5.00 RPS
+Burstiness               1.000
+Normal RPS               6.04 ± 1.85
+Normal RPS Range         3.34-9.98
+Interval Stats           Avg: 0.200s | Min: 0.000s | Max: 1.560s
+Interval Classification  Normal (Normal + Burstiness Anomaly): 2035 | Anomaly (Timing Anomaly + Infinite RPS Anomaly): 13
+
+[2026-07-09 18:04:55,853] [ais_bench] [INFO] RPS distribution charts saved to outputs/default/20260709_180358/performances/vllm-api-stream-chat/gsm8k_rps_distribution_plot.html
+[2026-07-09 18:04:55,855] [ais_bench] [INFO] Debug mode, run with concurrency: 256
+[2026-07-09 18:04:55,955] [ais_bench] [INFO] All subprocesses have finished deserializing the first batch of data
+[2026-07-09 18:04:56,055] [ais_bench] [INFO] Starting progress bar Total data num: 2048 Finished data num: 0 Left data num: 2048
+Progress: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2048/2048 [07:50<00:00,  4.35case/s]
+POST=2048 (0.0/s)  RECV=2048 (1.0/s)  FAIL=0 (0.0/s)  FINISH=2048 (1.0/s)   
+[2026-07-09 18:12:46,399] [ais_bench] [INFO] Api infer task time elapsed: 498.10s
+[2026-07-09 18:12:48,580] [ais_bench] [INFO] Inference tasks completed.
+[2026-07-09 18:12:48,582] [ais_bench] [INFO] Summarizing performance results...
+Calculating performance details: 100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 2048/2048 [00:00<00:00, 2266.56it/s]
+[2026-07-09 18:12:50,512] [ais_bench] [INFO] Successfully saved RPS distribution HTML chart to outputs/default/20260709_180358/performances/vllm-api-stream-chat/gsm8k_rps_distribution_plot_with_actual_rps.html
+[2026-07-09 18:12:50,512] [ais_bench] [INFO] Updated chart with actual RPS saved to outputs/default/20260709_180358/performances/vllm-api-stream-chat/gsm8k_rps_distribution_plot_with_actual_rps.html
+[2026-07-09 18:12:50,629] [ais_bench] [INFO] Request timeline and concurrency chart saved to outputs/default/20260709_180358/performances/vllm-api-stream-chat/gsm8k_plot.html
+[2026-07-09 18:12:50,630] [ais_bench] [INFO] The gsm8k_plot has been saved in outputs/default/20260709_180358/performances/vllm-api-stream-chat/gsm8k_plot.html
+[2026-07-09 18:12:50,634] [ais_bench] [INFO] Converting performance results for stage...
+[2026-07-09 18:12:50,636] [ais_bench] [INFO] Performance results conversion completed!
+[2026-07-09 18:12:50,636] [ais_bench] [INFO] Starting metrics calculation...
+[2026-07-09 18:12:50,639] [ais_bench] [INFO] Starting common metrics calculation...
+[2026-07-09 18:12:50,640] [ais_bench] [INFO] Adding units to metrics...
+[2026-07-09 18:12:50,640] [ais_bench] [INFO] Performance data calculation completed!
+[2026-07-09 18:12:50,641] [ais_bench] [INFO] Performance Results of task [vllm-api-stream-chat/gsm8k]: 
+╒══════════════════════════╤═════════╤═════════════════╤════════════════╤═════════════════╤═════════════════╤═════════════════╤═════════════════╤═════════════════╤══════╕
+│ Performance Parameters   │ Stage   │ Average         │ Min            │ Max             │ Median          │ P75             │ P90             │ P99             │  N   │
+╞══════════════════════════╪═════════╪═════════════════╪════════════════╪═════════════════╪═════════════════╪═════════════════╪═════════════════╪═════════════════╪══════╡
+│ E2EL                     │ total   │ 48061.9 ms      │ 7591.5 ms      │ 79227.3 ms      │ 48970.7 ms      │ 53992.3 ms      │ 58343.8 ms      │ 66507.1 ms      │ 2048 │
+├──────────────────────────┼─────────┼─────────────────┼────────────────┼─────────────────┼─────────────────┼─────────────────┼─────────────────┼─────────────────┼──────┤
+│ TTFT                     │ total   │ 48061.9 ms      │ 7591.5 ms      │ 79227.3 ms      │ 48970.7 ms      │ 53992.3 ms      │ 58343.8 ms      │ 66507.1 ms      │ 2048 │
+├──────────────────────────┼─────────┼─────────────────┼────────────────┼─────────────────┼─────────────────┼─────────────────┼─────────────────┼─────────────────┼──────┤
+│ InputTokens              │ total   │ 4272.2012       │ 3943.0         │ 4805.0          │ 4129.5          │ 4504.25         │ 4551.0          │ 4629.0          │ 2048 │
+├──────────────────────────┼─────────┼─────────────────┼────────────────┼─────────────────┼─────────────────┼─────────────────┼─────────────────┼─────────────────┼──────┤
+│ OutputTokens             │ total   │ 970.7847        │ 83.0           │ 1024.0          │ 1024.0          │ 1024.0          │ 1024.0          │ 1024.0          │ 2048 │
+├──────────────────────────┼─────────┼─────────────────┼────────────────┼─────────────────┼─────────────────┼─────────────────┼─────────────────┼─────────────────┼──────┤
+│ OutputTokenThroughput    │ total   │ 20.5069 token/s │ 6.4951 token/s │ 35.9137 token/s │ 20.2115 token/s │ 22.5451 token/s │ 24.5391 token/s │ 28.7585 token/s │ 2048 │
+╘══════════════════════════╧═════════╧═════════════════╧════════════════╧═════════════════╧═════════════════╧═════════════════╧═════════════════╧═════════════════╧══════╛
+╒══════════════════════════╤═════════╤════════════════════╕
+│ Common Metric            │ Stage   │ Value              │
+╞══════════════════════════╪═════════╪════════════════════╡
+│ Benchmark Duration       │ total   │ 468966.5964 ms     │
+├──────────────────────────┼─────────┼────────────────────┤
+│ Total Requests           │ total   │ 2048               │
+├──────────────────────────┼─────────┼────────────────────┤
+│ Failed Requests          │ total   │ 0                  │
+├──────────────────────────┼─────────┼────────────────────┤
+│ Success Requests         │ total   │ 2048               │
+├──────────────────────────┼─────────┼────────────────────┤
+│ Concurrency              │ total   │ 209.8886           │
+├──────────────────────────┼─────────┼────────────────────┤
+│ Max Concurrency          │ total   │ 256                │
+├──────────────────────────┼─────────┼────────────────────┤
+│ Request Throughput       │ total   │ 4.367 req/s        │
+├──────────────────────────┼─────────┼────────────────────┤
+│ Total Input Tokens       │ total   │ 8749468            │
+├──────────────────────────┼─────────┼────────────────────┤
+│ Prefill Token Throughput │ total   │ 88.8896 token/s    │
+├──────────────────────────┼─────────┼────────────────────┤
+│ Total Generated Tokens   │ total   │ 1988167            │
+├──────────────────────────┼─────────┼────────────────────┤
+│ Input Token Throughput   │ total   │ 18656.9109 token/s │
+├──────────────────────────┼─────────┼────────────────────┤
+│ Output Token Throughput  │ total   │ 4239.464 token/s   │
+├──────────────────────────┼─────────┼────────────────────┤
+│ Total Token Throughput   │ total   │ 22896.3749 token/s │
+╘══════════════════════════╧═════════╧════════════════════╛
+[2026-07-09 18:12:50,644] [ais_bench] [INFO] Performance Result files located in outputs/default/20260709_180358/performances/vllm-api-stream-chat.
+
+
+也试过以下接口，general_chat，结果一致：
+[root@ipb21b049c vllm_api]# cat yidong_5.py 
+from ais_bench.benchmark.models import VLLMCustomAPIChat
+from ais_bench.benchmark.utils.postprocess.model_postprocessors import extract_non_reasoning_content
+
+models = [
+    dict(
+        attr="service",
+        type=VLLMCustomAPIChat,
+        abbr="vllm-api-general-chat",
+        # path="/mnt/weight/Kimi-K2_5-w4a8c8",
+        path="/mnt/weight/Kimi-K2.5-w4a8",
+        model="kimi25",
+        stream=False,
+        request_rate=5,
+        use_timestamp=False,
+        retry=2,
+        api_key="",
+        host_ip="192.168.13.153",
+        host_port=8900,
+        url="",
+        max_out_len=1024,
+        batch_size=512,
+        trust_remote_code=True,
+        generation_kwargs=dict(
+            temperature=0,
+            ignore_eos=False,
+        ),
+        pred_postprocessor=dict(type=extract_non_reasoning_content),
+    )
+]
+
+

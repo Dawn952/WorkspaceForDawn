@@ -1,3 +1,5 @@
+ais_bench --models yd_5.0 --datasets gsm8k_gen_0_shot_cot_str_perf -m perf --num-prompts 2048 --debug
+
 [root@ipb21b049c vllm_api]# cat yd_5.0.py 
 from ais_bench.benchmark.models import VLLMCustomAPIChat
 from ais_bench.benchmark.utils.postprocess.model_postprocessors import extract_non_reasoning_content

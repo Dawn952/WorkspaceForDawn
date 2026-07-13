@@ -1,0 +1,291 @@
+P0:
+#!/bin/bash
+unset ftp_proxy
+unset https_proxy
+unset http_proxy
+
+nic_name="enp210s0f0"
+local_ip="192.168.13.153"
+
+export HCCL_IF_IP=$local_ip
+export GLOO_SOCKET_IFNAME=$nic_name
+export TP_SOCKET_IFNAME=$nic_name
+export HCCL_SOCKET_IFNAME=$nic_name
+
+export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/libjemalloc.so.2:$LD_PRELOAD
+echo performance | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+sysctl -w vm.swappiness=0
+sysctl -w kernel.numa_balancing=0
+sysctl kernel.sched_migration_cost_ns=50000
+export VLLM_RPC_TIMEOUT=3600000
+export VLLM_EXECUTE_MODEL_TIMEOUT_SECONDS=30000
+# AIV
+export HCCL_OP_EXPANSION_MODE="AIV"
+export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True
+export OMP_PROC_BIND=false
+export OMP_NUM_THREADS=1
+export TASK_QUEUE_ENABLE=1
+
+export HCCL_BUFFSIZE=1500
+export VLLM_ASCEND_ENABLE_FLASHCOMM1=1
+export ASCEND_RT_VISIBLE_DEVICES=$1
+export VLLM_ASCEND_ENABLE_FUSED_MC2=1
+export DYNAMIC_EPLB="true"
+
+vllm serve /mnt/weight/Kimi-K2.7-Code-w4a8/ \
+    --host 0.0.0.0 \
+    --port $2 \
+    --data-parallel-size $3 \
+    --data-parallel-rank $4 \
+    --data-parallel-address $5 \
+    --data-parallel-rpc-port $6 \
+    --tensor-parallel-size $7 \
+    --enable-expert-parallel \
+    --seed 1024 \
+    --quantization ascend \
+    --safetensors-load-strategy 'prefetch' \
+    --served-model-name kimi_k27 \
+    --trust-remote-code \
+    --max-num-seqs 20 \
+    --max-model-len 6144 \
+    --max-num-batched-tokens 16384 \
+    --gpu-memory-utilization 0.96 \
+    --enforce-eager \
+    --additional-config '{"eplb_config": {"dynamic_eplb": true, "expert_heat_collection_interval": 200},"ascend_compilation_config": {"enable_static_kernel": false}}' \
+    --speculative-config '{"method": "dflash","model": "/mnt/weight/Kimi-K2.7-Code-DFlash", "num_speculative_tokens": 15}' \
+    --kv-transfer-config \
+    '{"kv_connector": "MooncakeConnectorV1",
+    "kv_role": "kv_producer",
+    "kv_port": "30000",
+    "engine_id": "0",
+    "kv_connector_extra_config": {
+                "prefill": {
+                        "dp_size": 4,
+                        "tp_size": 4
+                },
+                "decode": {
+                        "dp_size": 8,
+                        "tp_size": 4
+                }
+        }
+    }' \
+2>&1 | tee 2p1d_p0.log
+
+P1:
+#!/bin/bash
+unset ftp_proxy
+unset https_proxy
+unset http_proxy
+
+nic_name="enp209s0f0"
+local_ip="192.168.13.154"
+
+export HCCL_IF_IP=$local_ip
+export GLOO_SOCKET_IFNAME=$nic_name
+export TP_SOCKET_IFNAME=$nic_name
+export HCCL_SOCKET_IFNAME=$nic_name
+
+export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/libjemalloc.so.2:$LD_PRELOAD
+echo performance | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+sysctl -w vm.swappiness=0
+sysctl -w kernel.numa_balancing=0
+sysctl kernel.sched_migration_cost_ns=50000
+export VLLM_RPC_TIMEOUT=3600000
+export VLLM_EXECUTE_MODEL_TIMEOUT_SECONDS=30000
+# AIV
+export HCCL_OP_EXPANSION_MODE="AIV"
+export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True
+export OMP_PROC_BIND=false
+export OMP_NUM_THREADS=1
+export TASK_QUEUE_ENABLE=1
+
+export HCCL_BUFFSIZE=1500
+export VLLM_ASCEND_ENABLE_FLASHCOMM1=1
+export ASCEND_RT_VISIBLE_DEVICES=$1
+export VLLM_ASCEND_ENABLE_FUSED_MC2=1
+export DYNAMIC_EPLB="true"
+
+vllm serve /mnt/weight/Kimi-K2.7-Code-w4a8/ \
+    --host 0.0.0.0 \
+    --port $2 \
+    --data-parallel-size $3 \
+    --data-parallel-rank $4 \
+    --data-parallel-address $5 \
+    --data-parallel-rpc-port $6 \
+    --tensor-parallel-size $7 \
+    --enable-expert-parallel \
+    --seed 1024 \
+    --quantization ascend \
+    --safetensors-load-strategy 'prefetch' \
+    --served-model-name kimi_k27 \
+    --trust-remote-code \
+    --max-num-seqs 20 \
+    --max-model-len 6144 \
+    --max-num-batched-tokens 16384 \
+    --gpu-memory-utilization 0.96 \
+    --enforce-eager \
+    --additional-config '{"eplb_config": {"dynamic_eplb": true, "expert_heat_collection_interval": 200},"ascend_compilation_config": {"enable_static_kernel": false}}' \
+    --speculative-config '{"method": "dflash","model": "/mnt/weight/Kimi-K2.7-Code-DFlash", "num_speculative_tokens": 15}' \
+    --kv-transfer-config \
+    '{"kv_connector": "MooncakeConnectorV1",
+    "kv_role": "kv_producer",
+    "kv_port": "30100",
+    "engine_id": "1",
+    "kv_connector_extra_config": {
+                "prefill": {
+                        "dp_size": 4,
+                        "tp_size": 4
+                },
+                "decode": {
+                        "dp_size": 8,
+                        "tp_size": 4
+                }
+        }
+    }' \
+2>&1 | tee 2p1d_p1.log
+
+D0:
+#!/bin/bash
+unset ftp_proxy
+unset https_proxy
+unset http_proxy
+
+nic_name="enp210s0f0"
+local_ip="192.168.13.155"
+
+export HCCL_IF_IP=$local_ip
+export GLOO_SOCKET_IFNAME=$nic_name
+export TP_SOCKET_IFNAME=$nic_name
+export HCCL_SOCKET_IFNAME=$nic_name
+
+export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/libjemalloc.so.2:$LD_PRELOAD
+echo performance | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+sysctl -w vm.swappiness=0
+sysctl -w kernel.numa_balancing=0
+sysctl kernel.sched_migration_cost_ns=50000
+export VLLM_RPC_TIMEOUT=3600000
+export VLLM_EXECUTE_MODEL_TIMEOUT_SECONDS=30000
+# AIV
+export HCCL_OP_EXPANSION_MODE="AIV"
+export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True
+export OMP_PROC_BIND=false
+export OMP_NUM_THREADS=1
+export TASK_QUEUE_ENABLE=1
+
+export HCCL_BUFFSIZE=1100
+export ASCEND_RT_VISIBLE_DEVICES=$1
+export VLLM_ASCEND_ENABLE_FUSED_MC2=1
+export DYNAMIC_EPLB="true"
+
+vllm serve /mnt/weight/Kimi-K2.7-Code-w4a8/ \
+    --host 0.0.0.0 \
+    --port $2 \
+    --data-parallel-size $3 \
+    --data-parallel-rank $4 \
+    --data-parallel-address $5 \
+    --data-parallel-rpc-port $6 \
+    --tensor-parallel-size $7 \
+    --enable-expert-parallel \
+    --seed 1024 \
+    --quantization ascend \
+    --safetensors-load-strategy 'prefetch' \
+    --served-model-name kimi_k27 \
+    --trust-remote-code \
+    --no-enable-prefix-caching \
+    --max-num-seqs 32 \
+    --max-model-len 6144 \
+    --max-num-batched-tokens 512 \
+    --gpu-memory-utilization 0.90 \
+    --enforce-eager \
+    --additional-config '{"recompute_scheduler_enable":true,"eplb_config": {"dynamic_eplb": true, "expert_heat_collection_interval": 200},"ascend_compilation_config": {"enable_static_kernel": false}}' \
+    --speculative-config '{"method": "dflash","model": "/mnt/weight/Kimi-K2.7-Code-DFlash", "num_speculative_tokens": 15}' \
+    --kv-transfer-config \
+    '{"kv_connector": "MooncakeConnectorV1",
+    "kv_role": "kv_consumer",
+    "kv_port": "30200",
+    "engine_id": "2",
+    "kv_connector_extra_config": {
+                "prefill": {
+                        "dp_size": 4,
+                        "tp_size": 4
+                },
+                "decode": {
+                        "dp_size": 8,
+                        "tp_size": 4
+                }
+        }
+    }' \
+2>&1 | tee 2p1d_d0.log
+
+D1:
+#!/bin/bash
+unset ftp_proxy
+unset https_proxy
+unset http_proxy
+
+nic_name="enp210s0f0"
+local_ip="192.168.13.156"
+
+export HCCL_IF_IP=$local_ip
+export GLOO_SOCKET_IFNAME=$nic_name
+export TP_SOCKET_IFNAME=$nic_name
+export HCCL_SOCKET_IFNAME=$nic_name
+
+export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/libjemalloc.so.2:$LD_PRELOAD
+echo performance | tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+sysctl -w vm.swappiness=0
+sysctl -w kernel.numa_balancing=0
+sysctl kernel.sched_migration_cost_ns=50000
+export VLLM_RPC_TIMEOUT=3600000
+export VLLM_EXECUTE_MODEL_TIMEOUT_SECONDS=30000
+# AIV
+export HCCL_OP_EXPANSION_MODE="AIV"
+export PYTORCH_NPU_ALLOC_CONF=expandable_segments:True
+export OMP_PROC_BIND=false
+export OMP_NUM_THREADS=1
+export TASK_QUEUE_ENABLE=1
+
+export HCCL_BUFFSIZE=1100
+export ASCEND_RT_VISIBLE_DEVICES=$1
+export VLLM_ASCEND_ENABLE_FUSED_MC2=1
+export DYNAMIC_EPLB="true"
+
+vllm serve /mnt/weight/Kimi-K2.7-Code-w4a8/ \
+    --host 0.0.0.0 \
+    --port $2 \
+    --data-parallel-size $3 \
+    --data-parallel-rank $4 \
+    --data-parallel-address $5 \
+    --data-parallel-rpc-port $6 \
+    --tensor-parallel-size $7 \
+    --enable-expert-parallel \
+    --seed 1024 \
+    --quantization ascend \
+    --safetensors-load-strategy 'prefetch' \
+    --served-model-name kimi_k27 \
+    --trust-remote-code \
+    --no-enable-prefix-caching \
+    --max-num-seqs 32 \
+    --max-model-len 6144 \
+    --max-num-batched-tokens 512 \
+    --gpu-memory-utilization 0.90 \
+    --enforce-eager \
+    --additional-config '{"recompute_scheduler_enable":true,"eplb_config": {"dynamic_eplb": true, "expert_heat_collection_interval": 200},"ascend_compilation_config": {"enable_static_kernel": false}}' \
+    --speculative-config '{"method": "dflash","model": "/mnt/weight/Kimi-K2.7-Code-DFlash", "num_speculative_tokens": 15}' \
+    --kv-transfer-config \
+    '{"kv_connector": "MooncakeConnectorV1",
+    "kv_role": "kv_consumer",
+    "kv_port": "30200",
+    "engine_id": "2",
+    "kv_connector_extra_config": {
+                "prefill": {
+                        "dp_size": 4,
+                        "tp_size": 4
+                },
+                "decode": {
+                        "dp_size": 8,
+                        "tp_size": 4
+                }
+        }
+    }' \
+2>&1 | tee 2p1d_d1.log

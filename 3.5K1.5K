@@ -45,6 +45,7 @@ vllm serve /mnt/weight/Kimi-K2.7-Code-w4a8/ \
     --quantization ascend \
     --safetensors-load-strategy 'prefetch' \
     --served-model-name kimi_k27 \
+    --no-enable-prefix-caching \
     --trust-remote-code \
     --max-num-seqs 20 \
     --max-model-len 6144 \
@@ -118,6 +119,7 @@ vllm serve /mnt/weight/Kimi-K2.7-Code-w4a8/ \
     --quantization ascend \
     --safetensors-load-strategy 'prefetch' \
     --served-model-name kimi_k27 \
+    --no-enable-prefix-caching \
     --trust-remote-code \
     --max-num-seqs 20 \
     --max-model-len 6144 \

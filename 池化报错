@@ -1,3 +1,77 @@
+
+Info: The max number of VTY users is 20, the number of current VTY users online is 1, and total number of terminal users online is 1.
+      The current login time is 2026-07-14 11:43:35+08:00.
+      The last login time is 2026-07-14 11:42:08+08:00 from 192.168.13.174 through SSH.
+<计算节点-6>sy
+<计算节点-6>system-view 
+Enter system view, return user view with return command.
+[~计算节点-6]dis start
+MainBoard:
+  Configured startup system software:        flash:/LCN5000_1.2.RC1.cc
+  Startup system software:                   flash:/LCN5000_1.2.RC1.cc
+  Next startup system software:              flash:/LCN5000_1.2.RC1.cc
+  Startup saved-configuration file:          flash:/192.168.14.156.cfg
+  Next startup saved-configuration file:     flash:/192.168.14.156.cfg
+  Startup paf file:                          default
+  Next startup paf file:                     default
+  Startup patch package:                     NULL
+  Next startup patch package:                NULL
+  Startup feature software:                  NULL
+  Next startup feature software:             NULL
+[~计算节点-6]start sys L
+[~计算节点-6]start sys L
+[~计算节点-6]start sys L
+[~计算节点-6]start sys  
+[~计算节点-6]start sys LCN 
+[~计算节点-6]start sys LCN5000_1.5.3.cc
+                   ^
+Error: Unrecognized command found at '^' position.
+[~计算节点-6]
+[~计算节点-6]dis
+[~计算节点-6]display star
+[~计算节点-6]display startup 
+MainBoard:
+  Configured startup system software:        flash:/LCN5000_1.2.RC1.cc
+  Startup system software:                   flash:/LCN5000_1.2.RC1.cc
+  Next startup system software:              flash:/LCN5000_1.2.RC1.cc
+  Startup saved-configuration file:          flash:/192.168.14.156.cfg
+  Next startup saved-configuration file:     flash:/192.168.14.156.cfg
+  Startup paf file:                          default
+  Next startup paf file:                     default
+  Startup patch package:                     NULL
+  Next startup patch package:                NULL
+  Startup feature software:                  NULL
+  Next startup feature software:             NULL
+[~计算节点-6]st
+[~计算节点-6]startup sy
+[~计算节点-6]startup sy
+[~计算节点-6]sy          
+[~计算节点-6]sysnam  
+[~计算节点-6]sysname 
+[~计算节点-6]sysname 
+[~计算节点-6]dis     
+[~计算节点-6]display st
+[~计算节点-6]display startup
+MainBoard:
+  Configured startup system software:        flash:/LCN5000_1.2.RC1.cc
+  Startup system software:                   flash:/LCN5000_1.2.RC1.cc
+  Next startup system software:              flash:/LCN5000_1.2.RC1.cc
+  Startup saved-configuration file:          flash:/192.168.14.156.cfg
+  Next startup saved-configuration file:     flash:/192.168.14.156.cfg
+  Startup paf file:                          default
+  Next startup paf file:                     default
+  Startup patch package:                     NULL
+  Next startup patch package:                NULL
+  Startup feature software:                  NULL
+  Next startup feature software:             NULL
+[~计算节点-6]sta
+[~计算节点-6]startup sys L
+[~计算节点-6]startup sys L
+                     ^
+Error: Unrecognized command found at '^' position.
+[~计算节点-6]
+
+
 (Worker_DP3_TP2_EP14 pid=184199) INFO 07-13 14:43:24 [kv_transfer.py:364] Storing KV cache for 32 out of 127 blocks (missing_count=32) for request chatcmpl-1ea6fdcf-857a-4587-9034-42b4cc4dff15-be5bbbbd in group 0
 (Worker_DP3_TP0_EP12 pid=183944) INFO 07-13 14:43:24 [kv_transfer.py:364] Storing KV cache for 32 out of 127 blocks (missing_count=32) for request chatcmpl-1ea6fdcf-857a-4587-9034-42b4cc4dff15-be5bbbbd in group 0
 (Worker_DP3_TP1_EP13 pid=184033) INFO 07-13 14:43:24 [kv_transfer.py:364] Storing KV cache for 32 out of 127 blocks (missing_count=32) for request chatcmpl-1ea6fdcf-857a-4587-9034-42b4cc4dff15-be5bbbbd in group 0

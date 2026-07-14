@@ -1,0 +1,2 @@
+mount -t nfs -o vers=4,minorversion=2,proto=rdma,rsize=262144,wsize=262144,hard,intr,timeo=50 172.27.1.1:/Share /mnt/share
+mount -t nfs -o vers=4,minorversion=2,proto=rdma,rsize=262144,wsize=262144,hard,intr,timeo=50 172.27.1.1:/Weight /mnt/weight
